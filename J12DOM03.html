@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J12DOM03.html</title>
+</head>
+<body>
+    <!-- 
+        id속성은 HTML 문서에서 하나만 사용할 수 있다.
+        Class속성은 공통 속성으로 여러개를 사용할 수 있다.
+     -->
+    <style>
+        div{border: 1px solid blue;}
+        #mydiv{font-size:24px;}
+        .mycls{padding:5px;}
+    </style>
+
+    <script>
+    function myDivId(){
+        var div = document.getElementById("mydiv");
+        div.style.color = "red";
+    }
+    function myDivClass(){
+        var divs = document.getElementsByClassName("mycls");
+        for(var i=0 ; i<divs.length ; i++){
+            divs[i].style.color = "green";
+        }
+    }
+    </script>
+
+    <div id="mydiv" class="mycls">MyDiv1</div>
+    <div id="mydiv" class="mycls">MyDiv2</div>
+    <div id="mydiv" class="mycls">MyDiv3</div>
+    <div id="mydiv" class="mycls">MyDiv4</div>
+
+    <button type="button" onclick="myDivId();">
+        Id버튼
+    </button>
+    <button type="button" onclick="myDivClass();">
+        Class버튼
+    </button>
+
+    <br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J17CssControl.html</title>
+    <script>
+        //전역변수 선언
+        var pTag, pSize;
+        //문서가 로드되면 기사 부분의 DOM과 폰트크기를 얻어온다.
+        window.onload = function(){
+            pTag = document.getElementById("article");
+            pSize = parseInt(pTag.style.fontSize);
+        }
+
+        function fnArticle(flag){
+            /*
+            JS에서 CSS속성 컨트롤
+                : DOM.style.CSS속성 = "속성값";
+                만약 CSS에 하이픈이 들어간다면 제거 후 두번째 블럭의 첫글자를
+                대문자로 변경한다. 또한 크기 지정시 px과 같은 단위가 반드시 필요하다.
+            */
+            switch(flag){
+            //폰트 크기 지정
+            case "+":
+                pSize += 10;
+                pTag.style.fontSize = pSize+"px";
+                baeak;
+            case "-":
+                pSize -= 10;
+                pTag.style.fontSize = pSize+"px";
+                baeak;
+            //폰트 색깔 지정
+            case "R":
+                pTag.style.color = "red";
+                break;
+            case "G":
+                pTag.style.color = "green";
+                break;
+            case "B":
+                pTag.style.color = "blue";
+                break;
+            //폰트 굵기 지정
+            case "Bo":
+                pTag.style.fontWeight = "bold";
+                break;
+            case "No":
+                pTag.style.fontWeight = "normal";
+                break;
+            //텍스트 정렬 지정
+            case "Ce":
+                pTag.style.textAlign = "Center";
+                break;
+            case "Le":
+                pTag.style.textAlign = "Left";
+                break;
+            //배경색 지정
+            case "B_red":
+                pTag.style.backgroundColor = "red";
+                break;
+                case "B_silver":
+                pTag.style.backgroundColor = "silver";
+                break;
+                case "B_white":
+                pTag.style.backgroundColor = "white";
+                break;
+            default:
+                pTag.style.color = "black";
+            }
+        }
+
+        /*
+        연습문제] 글꼴바꾸기 버튼을 계속 누를때마다 아래 5가지
+        폰트가 토글되어 적용될수 있도록 함수를 정의하시오.
+        글꼴 : Verdana, 굴림체, 휴먼옛체, 궁서, Impact
+        */  
+        var fontToggle = 0;
+        function setFont(){
+            //문제에서 주어진 폰트를 배열로 선언
+            var fontArray = ['Verdana', '굴림체', '휴먼옛체', '궁서', 'Impact'];
+            //정수를 5로 나누면 0~4까지의 나머지가 생성됨
+            var idx = fontToggle % 5;
+            //앞에서 생성된 정수를 인덱스로 폰트를 스타일로 적용
+            pTag.style.fontFamily = fontArray[idx];
+            //함수 호출시마다 변수 증가
+            fontToggle++;
+        }
+
+
+    </script>
+</head>
+<body>
+    <h2>자바스크립트로 CSS제어하기</h2>
+    <input type="button" value="글꼴바꾸기" onclick="setFont();"/>
+    <fieldset>
+        <legend>신문기사</legend>
+        <button onclick="fnArticle('+');">+</button>
+        <button onclick="fnArticle('-');">-</button>
+        <button onclick="fnArticle('R');">Red</button>
+        <button onclick="fnArticle('G');">Green</button>
+        <button onclick="fnArticle('B');">Blue</button>
+        <button onclick="fnArticle('');">Black</button>
+        <button onclick="fnArticle('Bo');">볼드체</button>
+        <button onclick="fnArticle('No');">보통체</button>
+        <button onclick="fnArticle('Ce');">가운데정렬</button>
+        <button onclick="fnArticle('Le');">좌측정렬</button>
+        
+        <button onclick="fnArticle('B_red');">배경색(red)</button>
+        <button onclick="fnArticle('B_silver');">배경색(silver)</button>
+        <button onclick="fnArticle('B_white');">배경색(white)</button>
+    </fieldset>
+    <p style="font-size:12px;" id="article">
+        오늘의뉴스<br/>
+        [OSEN=강서정 기자] 안무가 허니제이가 파격적인 노출 의상을 선보였다.
+        허니제이는 지난 14일 자신의 SNS에 “Look 비하인드”라는 글과 동영상, 사진들을 게재했다.
+        동영상에서 허니제이는 비주얼 필름을 촬영하고 있는 모습. 헤어스타일은 물론이고 의상까지 독특하고 파격적인 디자인으로 눈길을 끌고 있다.
+        특히 허니제이는 엉덩이 양쪽만 뚫은 파격적인 노출 의상으로 보는 이를 놀라게 했다. 탄탄한 엉덩이를 뽐내며 자신감 넘치는 표정이 인상적이다.
+        한편 허니제이는 절친인 가수 박재범 레이블 MORE VISION (모어비전)에 합류했다. 모어비전은 박재범이 지난 3월 새롭게 론칭한 엔터테인먼트사다. /kangsj@osen.co.kr
+        [사진] 허니제이 SNS
+    </p>
+</body>
+</html>

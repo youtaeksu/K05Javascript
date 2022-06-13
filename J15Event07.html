@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+    <h3>mousedown이벤트</h3>
+    <h4>div상자의 위치이동</h4>
+    <div onmousedown="setTimer(this);" style="left:0;top:0;
+        position:relative; width:100px; height:100px;
+        background-color:blue;"></div>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J15Event07.html</title>
+    <script>
+    //전역변수 선언
+    var timer, count=1, divObj;
+    //해당 엘리먼트를 클릭(down)했을때 호출된다.
+    function setTimer(obj){
+        //div태그의 DOM객체를 전역변수에 저장한다.
+        divObj = obj;
+        //0.3초에 한번씩 moveObj()함수를 호출한다.
+        timer = setInterval("moveObj()", 300);
+    }
+    function moveObj(){
+        //함수가 3번 호출되면 타이머 변수를 이용해서 중지시킨다.
+        if(count%3==0){
+            clearInterval(timer);
+        }
+        count++;
+        /*
+        div박스의 left속성값을 얻어온 후 숫자로 변경하여 50을 더한다.
+        이 값을 left속성에 다시 적용하면 좌측여백이 생겨 우측으로 이동하는것처럼
+        보이게 된다.
+        */
+        var left = parseInt(divObj.style.left);
+        divObj.style.left = (left + 50) +"px";
+    }
+    </script>
+</head>
+
+<body>
+    <h2>마우스 이벤트</h2>
+    <!-- 
+        onmouseover : 특정 엘리먼트에 마우스를 올렸을때 발생하는 이벤트
+        onmouseout : 내렸을때 발생
+
+     -->
+    <h3>mouseover / mouseout 이벤트</h3>
+    <table style="border-spacing:1px; width:400px; background-color:gray;">
+        <tr style="background-color:yellow;">
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+        </tr>
+        <!-- 
+            HTML자체적으로 DOM객체를 선택할때는 this릍 통해 설정할 수 있다.
+		 -->
+        <tr style="background-color:gray;" onmouseover="this.style.backgroundColor='green';"
+            onmouseout="this.style.backgroundColor='gray';">
+            <td>1</td>
+            <td>어벤져스</td>
+            <td>페이즈1</td>
+        </tr>
+        <tr style="background-color:white;" onmouseover="this.style.backgroundColor='green';"
+            onmouseout="this.style.backgroundColor='white';">
+            <td>2</td>
+            <td>어벤져스2-울트론의시대</td>
+            <td>페이즈2</td>
+        </tr>
+        <tr style="background-color:gray;" onmouseover="this.style.backgroundColor='green';"
+            onmouseout="this.style.backgroundColor='gray';">
+            <td>3</td>
+            <td>어벤져스3-인피니티워</td>
+            <td>페이즈3</td>
+        </tr>
+        <tr style="background-color:white;" onmouseover="this.style.backgroundColor='green';"
+            onmouseout="this.style.backgroundColor='white';">
+            <td>4</td>
+            <td>어벤져스4-엔드게임</td>
+            <td>페이즈4</td>
+        </tr>
+    </table>
+
+    <script>
+    function fnScale(flag){
+        //id가 title인 엘리먼트의 DOM을 얻어온다.
+        var title = document.getElementById("title");
+        //태그명이 div인 엘리먼트 중 첫번째 DOM을 얻어온다.
+        var div = document.getElementsByTagName("div")[0];
+        /*
+        Javascript에서 CSS의 style를 제어할때는 다음과 같이 한다.
+        color 와 같이 하이픈(-)이 없는 경우
+            DOM객체.style.color = 값
+        background-color와 같이 하이픈이 있는 경우
+            DOM객체.style.backgroundColor = 값
+        즉, 하이픈을 제거한 후 대문자로 변경한다.
+        */
+        if(flag==1){
+            title.innerHTML = "<big>mousedown 이벤트 발생</big>";
+            div.style.backgroundColor = "green";
+            /*
+            div박스의 크기를 가져와서 숫자로 변경한 후 2를 곱해서 확대된 크기를 구한다.
+            사이즈를 설정할때는 반드시 px와 같은 단위를 붙여준다.
+            */
+            div.style.width = parseInt(div.style.width)*2 +"px";
+            div.style.height = parseInt(div.style.height)*2 +"px";
+        }
+        else if(flag==2){
+            title.innerHTML = "mouseup 이벤트 발생";
+            div.style.backgroundColor = "red";
+            div.style.width = "100px";
+            div.style.height = "100px";
+        }
+    }
+    </script>
+
+    <!-- 
+		mousedown : 마우스를 클릭했을때 발생되는 이벤트
+		mouseup : 클릭 후 땠을때 발생되는 이벤트
+	 -->
+    <h3 id="title">mousedown/mouseup 이벤트</h3>
+    <h4>스케일 및 색상변경</h4>
+    <div onmousedown="fnScale(1);" onmouseup="fnScale(2);" style="background-color:red; width:100px; height:100px;">
+        여기를 클릭해보세요
+    </div>
+
+
+    <!-- 
+    연습문제] 아래 트럼프 이미지에 마우스를 
+	오버했을때 2.jpg로 교체한다.[mouseoverFunc()]
+	아웃했을때 1.jpg로 교체한다.[mouseoutFunc()]
+	다운했을때 이미지크기를 2배로 늘린다.[mousedownFunc()]
+	업했을때 이미지크기를 원래대로 돌린다.[mouseupFunc()]
+     -->
+    <script>
+        function mouseoverFunc(obj){
+            obj.src = "./images/2.jpg";
+        }
+        function mouseoutFunc(){
+            var img = document.getElementsByTagName("img");
+            img[0].src = "./images/1.jpg";
+        }
+        
+        //아래 3개의 함수에서 공통으로 사용하기 위해 전역변수로 선언
+        var imgTag;
+        function mousedownFunc(){
+            console.log("mousedownFunc()호출됨");
+            //이미지의 현재 사이즈를 가져온 후 *2 해준다.
+            imgTag.style.width = (parseInt(imgTag.style.width) * 2)+"px";
+            imgTag.style.height = (parseInt(imgTag.style.height) * 2)+"px";
+        }
+        function mouseupFunc(){
+            console.log("mousedownFunc()호출됨");
+            //마우스를 땠을때는 원래 크기로 되돌린다.
+            imgTag.style.width = (parseInt(imgTag.style.width) / 2)+"px";
+            imgTag.style.height = (parseInt(imgTag.style.height) / 2)+"px";
+        }
+
+        //해당 HTML문서의 로드가 끝난직후 무기명 함수를 실행한다.
+        window.onload = function(){
+            //트럼프 이미지의 DOM객체를 얻어온다.
+            imgTag = document.getElementsByTagName("img")[0];
+            //img 이벤트를 부착한 후 함수를 연결한다. 이 경우 소괄호를 생략할 수 있다.
+            imgTag.onmousedown = mousedownFunc;
+            imgTag.onmouseup = mouseupFunc;
+
+        }
+    </script>
+    <h3>이미지에 마우스 이벤트 적용하기</h3>
+        <img src="./images/1.jpg" alt="하트" style="width:225px;height:313px;"
+            onmouseover="mouseoverFunc(this);" onmouseout="mouseoutFunc();"/>
+
+
+</body>
+
+</html>

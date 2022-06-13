@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J15Event04.html</title>
+</head>
+<body>
+    <!-- 
+        click이벤트 : HTML에서 가장많이 사용되는 이벤트로 마우스로 클릭했을때
+            발생된다. HTML의 모든 엘리먼트에 부착할 수 있다.
+
+        cursor 속성 : 마우스커서의 모양을 변경할수 있는 CSS의 속성
+     -->
+    <h2>이벤트 - click</h2>
+
+    <div style="border:1px solid red; cursor:pointer;"
+        onclick="alert('div에 클릭이벤트 발생됨');">
+        div클릭이벤트
+    </div>
+    
+    <h3 style="border:1px solid blue; cursor:crosshair;"
+        onclick="alert('h3에 클릭이벤트 발생');">
+        h3클릭이벤트
+    </h3>
+    
+    <!-- 
+        change이벤트 : select태그에서 option을 선택할때마다 발생하는 이벤트로
+            주로 select태그에서 사용한다.
+     -->
+    <h2>이벤트 - change</h2>
+    <script>
+    function fnSelect(obj){
+        /*
+        매개변수로 전달된 obj와 getElementById()로 얻어온 객체는
+        동일한 DOM이다. 즉 <form>하위 태그에서는 this를 통해 DOM자체를
+        매개변수로 전달할 수 있다.
+        */
+        var obj2 = document.getElementById("fruit");
+
+        /*
+        선택한 option항목의 인덱스값을 반환한다. 인덱스는 0부터 시작한다.
+        */
+        alert("선택항목의인덱스:"+ obj2.selectedIndex);
+
+        //option항목의 갯수를 반환한다.
+        var items = obj.options.length;//5개
+        alert("총아이템:"+ items);
+        
+        /*
+        option태그의 value 가져오기
+            방법1 : DOM객체.value
+            방법2 : DOM객체.options[인덱스값].value
+        option태그의 text 가져오기
+            위와 방법은 동일하고 text속성만 변경하면 된다.
+        */
+        alert("value값:"+ obj.value);
+        alert("value값:"+ obj.options[obj.selectedIndex].text);
+        
+        alert("텍스트얻기:"+ obj[obj.selectedIndex].text);
+        alert("텍스트얻기:"+ obj.options[obj.selectedIndex].text);
+
+        //최초로 선택한 항목 이외의 모든 option의 text를 ===로 변경한다.
+        for(var i=0 ; i<items ; i++){//5번반복
+            if(obj.option[i].selected==true){
+                /*
+                checkbox, radio의 경우 checked 속성을 통해 체크여부를 확인한다.
+                select의 경우 selected 속성을 통해 선택여부를 확인할 수 있다.
+                */
+            }
+            else{
+                obj.option[i].text = "======";
+            }
+        }
+    }
+    </script>
+
+
+    <script>
+    function fnSubmit(){
+        //form태그 하위의 input 태그의 DOM객체를 얻어온다.
+        var txtObj = document.subForm.txt;
+        //getElementXXX()계열의 함수를 통해서도 DOM객체를 얻어올 수 있다.
+        // var txtObj = document.getElementById("idTxt");
+        /*
+        폼값을 서버로 전송할때는 name속성에 입력한 값을 실어서 전송하므로
+        꼭 필요한 경우가 아니라면 id속성은 사용하지 않는것이 좋다.
+        */
+
+        //input 상자에 입력된 내용이 없는경우..
+        if(txtObj.value==""){
+            //경고창을 띄운다.
+            alert("텍스트를 입력하세요");
+            //input 상자로 포커스를 이동한다.
+            txtObj.focus();
+            //submit 이벤트 리스너로 false를 반환한다.
+            return false;
+            //이벤트 리스너가 false를 받으면 전송이 중단된다.
+        }
+    }
+    /*
+    form태그는 문서내에서 2개이상 사용할 수 있으므로 forms[인덱스]와 같은 형태로
+    DOM에 접근할 수 있다.
+    */
+    window.onload = function(){
+        document.forms[0].onreset = function(){
+            alert("reset 이벤트 발생");
+        }
+    }
+    </script>
+
+    <h2>select에서 발생되는 change이벤트</h2>
+    <h3>당신이 좋아하는 과일은?</h3>
+    <select id="fruit" onchange="fnSelect(this);" multiple size="5">
+        <option value="apple">사과</option>
+        <option value="orange">오렌지</option>
+        <option value="mango" selected>망고</option>
+        <option value="banana">바나나</option>
+        <option value="guaba">구아바</option>
+    </select>
+
+
+    <h2>submit / reset 이벤트</h2>
+    <!-- 
+        action : 폼값을 전송할 서버의 URL 혹은 경로명을 기술한다.
+        onsubmit : submit이벤트 리스너로 만약 false가 전달되면 전송이 중단된다.
+            true가 전달되면 폼값은 전송되지만 통상적으로 사용하지 않는다.
+     -->
+    <form name="subForm" action="http://ikosmo.co.kr" onsubmit="return fnSubmit();">
+        
+        <input type="text" name="txt" id="idTxt" value="" />
+        <input type="reset" value="리셋" />
+        <!-- 
+
+         -->
+        <input type="submit" value="서브밋(전송)" />
+        <input type="image" src="./images/button.jpg" />
+    </form>
+
+</body>
+</html>

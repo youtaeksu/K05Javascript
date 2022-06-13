@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>월화수목금토일</h1>
+    <hr>
+    <script>
+        var week = prompt("월~일요일중 하나를 입력하세요", "금");
+        if (week == null) {
+            alert("압~아무런 값도 입력되지 않았네요.");
+        }
+        else {
+            switch (week) {
+                case "월": case "화": case "수": case "목":
+                    document.write("오늘은 출근하는날ㅜㅜ");
+                    break;
+                case "금": case "토": case "일":
+                    document.write(week + "요일은 쉬는날^^");
+                    break;
+                default:
+                    document.write("요일을 잘못 입력하셨네요");
+            }
+        }
+    </script>
+</body>
+
+</html>

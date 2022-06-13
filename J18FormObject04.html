@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J18FormObject04.html</title>
+    <script>
+    //매개변수를 통해 <form>태그의 DOM을 전달받아 사용한다.
+    var isValidate = function(frm){
+        //아이디에 대한 입력값을 검증한다. 빈값인 경우 경고창을 띄우고 포커스를 이동한다.
+        //또한 submit 이벤트 리스너쪽으로 false를 반환하여 폼값 전송이 중단되게 한다.
+        if(frm.id.value==''){
+            alert('아이디를 입력하세요');
+            frm.id.focus();
+            return false;
+        }
+        //2개의 패스워드 중 하나라도 입력하지 않으면 경고창을 띄어준다.
+        //단, 포커스 이동은 하지않는다.
+        if(!frm.pwd.value || !frm.pwd2.value){
+            alert('패스워드를 입력하세요');
+            return false;
+        }
+        //비밀번호가 서로 일치하지 않는경우 재입력을 요구한다.
+        if(frm.pwd.value != frm.pwd2.value){
+            alert("입력한 패스워드가 일치하지 않습니다.");
+            //기존에 입력된 비밀번호를 지워준다. value에 빈값을 지정하면 된다.
+            frm.pwd.value="";
+            frm.pwd2.value="";
+            frm.pwd.focus();
+            return false;
+        }
+        /*
+        checkbox와 radio는 기본적으로 value속성값을 가지고 있으므로 입력값에
+        대한 검증이 아니라, 선택여부에 대한 검증을 해야한다.
+        */
+        //radio는 하나의 항목만 선택할 수 있으므로 boolean타입의 변수를 생성한다.
+        var isGender = false;
+        //라디오 갯수만큼 반복한다.
+        for(var i=0 ; i<frm.gender.length ; i++){
+            //체크된 항목이 있는지 확인해서..
+            if(frm.gender[i].checked==true){
+                //있다면 true로 값을 변경한다.
+                isGender = true;
+                //radio는 하나만 선택할 수 있으므로 확인되면 즉시 탈출한다.
+                break;
+            }
+        }
+        //성별을 체크하지 않았다면 경고창을 띄운다.
+        if(isGender != true){
+            alert("성별을 선택해 주세요");
+            //라디오는 여러항목이 있으므로 focus()를 사용시 인덱스를 명시해야한다.
+            frm.gender[0].focus();
+            return false;
+        }
+
+        //checkbox는 여러개를 선택할 수 있으므로 카운트를 위해 숫자타입의 변수를 생성한다.
+        var checkCount = 0;
+        //체크박스의 갯수만큼 반복해서...
+        for(var i=0 ; i<frm.inter.length ; i++){
+            if(frm.inter[i].checked==true){
+                //체크된 항목이 확인되면 1증가한다.
+                checkCount++;
+            }
+        }
+        //관심사항이 2개 미만이면 경고창을 띄운다.
+        if(checkCount<2){
+            alert("관심사항을 2개이상 선택해주세요");
+            //항목이 2개이상이므로 인덱스를 사용해서 focus()한다.
+            frm.inter[0].focus();
+            return false;
+        }
+
+        /*
+        select태그의 경우
+            모든 option이 value를 가지고 있을때
+                => selectedIndex를 사용하여 체크한다. 즉 몇번째 항목이 선택되었는지를
+                통해 입력여부를 판단한다.
+            value가 없는 항목이 있을때
+                => input과 동일하게 value속성이 빈값인지 확인한다.
+        */
+        if(frm.grade1.selectedIndex == 0){
+            alert("학력을 선택하세요");
+            frm.grade1.focus();
+            return false;
+        }
+
+        if(frm.grade2.value==""){
+            alert("학력을 선택하세요");
+            frm.grade2.focus();
+            return false;
+        }
+        //file타입인 경우 기존 input과 동일하게 체크한다.
+        if(frm.userfile.value==""){
+            alert("첨부파일을 선택하세요.");
+            frm.userfile.focus();
+            return false;
+        }
+        /*
+        textarea는 자체적인 value속성은 없으나, JS에서 DOM을 통해 검증할때는
+        value속성을 통해 접근해야 한다.
+        */
+        if(frm.intro.value==""){
+            alert("자기소개를 선택하세요.");
+            frm.intro.focus();
+            return false;
+        }
+    }
+        //아이디 중복확인을 위한 함수
+        function idCheck(fn){
+            //아이디가 입력되지 않은 상태면 경고창을 띄운다.
+            if(fn.id.value==""){
+                alert("아이디를 입력후 중복확인을 누르삼");
+                fn.id.focus;
+            }
+            else{
+                /*
+                중복확인창을 띄울때 기존 입력된 아이디를 수정할 수 없도록 readonly속성으로
+                변경한다. readonly속성은 수정은 불가능하지만 submit시 서버로 전송은 가능하다.
+                */
+                fn.id.readOnly = true;
+                /*
+                부모창에서 입력된 아이디를 파라미터로 팝업창에 전달한다. 이때 파라미터명은
+                id이고 전달되는 값은 사용자가 입력한 아이디이다.
+                */
+                window.open("./pages/id_overapping.html?id="+fn.id.value,
+                        "idover", "width=500, height=250");
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <h2>회원가입 페이지</h2>
+    <form name="registFrm" onsubmit="return isValidate(this);">
+    <!-- table>tr*9>td*2 -->
+    <table border="1" cellspacing="0" cellpadding="5">
+        <tr>
+            <td>아이디</td>
+            <td>
+                <input type="text" name="id" size="20" />
+                <button type="button" onclick="idCheck(this.form);">아이디중복확인</button>
+            </td>
+        </tr>
+        <tr>
+            <td>패스워드</td>
+            <td>
+                <input type="password" name="pwd" size="25" />
+            </td>
+        </tr>
+        <tr>
+            <td>패스워드확인</td>
+            <td>
+                <input type="password" name="pwd2" size='25' />
+            </td>
+        </tr>
+        <tr>
+            <td>성별</td>
+            <td>
+                <input type="radio" name="gender" value="man" />남
+                <input type="radio" name="gender" value="woman"/>여
+                <input type="radio" name="gender" value="trans" />트랜스젠더
+            </td>
+        </tr>
+        <tr>
+            <td>관심사항(2개선택)</td>
+            <td>
+                <label>
+                <input type="checkbox" name="inter" value="pol" />정치
+                </label>
+    
+                <input type="checkbox" name="inter" value="eco" 
+                    id="ec"/><label for="ec">경제</label>
+    
+                <input type="checkbox" name="inter" value="spo" 
+                    id="sp"/><label for="sp">스포츠</label>
+    
+                <input type="checkbox" name="inter" value="ent" 
+                    id="en"/><label for="en">연예</label>
+            </td>
+        </tr>
+        <tr>
+            <td>최종학력</td>
+            <td>
+            <select name="grade1">
+                <option value="noValue">--선택하세요(값있음)--</option>
+                <option value="ele">초등학교</option>
+                <option value="mid">중학교</option>
+                <option value="high">고등학교</option>
+                <option value="uni">대학교</option>
+            </select>		
+            &nbsp;
+            <select name="grade2">
+                <option value="">--선택하세요(값없음)--</option>
+                <option value="ele">초등학교</option>
+                <option value="mid">중학교</option>
+                <option value="high">고등학교</option>
+                <option value="uni">대학교</option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td>첨부파일</td>
+            <td>
+                <input type="file" name="userfile" size="40"/>		
+            </td>
+        </tr>
+        <tr>
+            <td>자기소개</td>
+            <td>
+                <textarea name="intro" cols="30" rows="10" value="나는 누구? 나는 내용??"></textarea>	
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center;">
+                <button type="submit">회원가입하기</button>
+                &nbsp;&nbsp;
+                <button type="reset">RESET</button>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+    
+</html>

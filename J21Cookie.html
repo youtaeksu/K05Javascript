@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J21Cookie.html</title>
+    <script>
+    /*
+    쿠키생성 기본
+        매개변수로 전달되는 exp가 양수면 미래의 시간이 만들어지므로 쿠키가 생성된다.
+        반대로 음수라면 쿠키는 삭제된다. 즉 쿠키는 과거의 시간으로 설정되면 삭제된다.
+        쿠키는 웹브라우저를 닫아도 삭제되지 않고 유효시간동안 유지된다.
+    */
+    // 해당 함수는 3개의 매개변수로 구성된다. 쿠키명, 쿠키값, 유효기간
+    var setCookie = function (name, value, exp) {
+        //시간설정을 위해 Date객체를 생성한다.
+        var date = new Date();
+        console.log("1970-01-01부터 지금까지의 초(타임스탬프)", date.getTime());
+        //매개변수로 전달된 날짜(exp)에 하루에 해당하는 86400초를 곱해서 유효기간을 계산한다.
+        date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+        console.log("유효시간", date.toUTCString());
+        //쿠키생성 : 쿠키명=쿠키값;유효시간;적용될경로;
+        document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+    };
+
+    /*
+    쿠키 읽기 기본
+        쿠키는 ;(세미콜론)으로 구분되므로 1차 split()하고, =(이퀄)로 2차 split()
+        한 후 쿠키값을 가져온다.
+
+        쿠키생성 => name + '=' + value + ';expires=' + date.toUTCString() + ';path=/'
+        우리가 직접 생성한 쿠키
+            => popup1=팝업창열기;expires=내일날짜로설정;path=/
+        세미콜론으로 1차 split
+            => [0] : popup1=팝업창열기
+               [1] : expires=내일날짜로설정
+               [2] : path=/
+        이퀄로 2차 split
+            => [0]에 쿠키값이 있으므로
+                쿠키명 : popup1
+                쿠키값 : 팝업창열기
+
+    */
+    var getCookie = function (name) {
+        var values = document.cookie.split(";");
+        for(var i=0 ; i<values.length ; i++){
+            var unit = values[i].trim();
+            var value = unit.split('=');
+            if(value[0]==name){
+                return unescape(value[1]);
+            }
+        }
+        return null;
+    };
+
+    //쿠키를 생성하는 함수
+    function makeCookie(){
+        var cName = document.getElementById('cName').value;
+        var cValue = document.getElementById('cValue').value;
+        //쿠키 생성시에는 양수를 전달한다. 미래의 날짜가 생성됨.
+        setCookie(cName, cValue, 1);
+        alert('쿠키가 생성되었습니다.');
+        //화면을 새로고침 한다. F5를 누른것과 동일하다.
+        location.reload();
+    }
+    //쿠키 읽어오기
+    function readCookie() {
+        //읽어올 쿠키명을 가져온다.
+        var cName = document.getElementById('cName').value;
+        //해당 이름으로 생성된 쿠키가 있다면 읽어온다.
+        var readValue = getCookie(cName);
+        if(readValue==null){
+            alert("해당 이름으로 생성된 쿠키가 없습니다.")
+        }
+        else{
+            alert("쿠키값:"+readValue);
+        }
+    }
+    //쿠키 삭제하기 : 과거의 날짜로 유효기간을 설정하면 삭제된다.
+    function deleteCookie() {
+        var cName = document.getElementById('cName').value;
+
+        setCookie(cName, cValue, -1);
+        alert('쿠키가 삭제되었습니다.');
+        location.reload();
+    }
+
+    //팝업창 닫기
+    function closeWin(){
+        //display속성을 통해 div 엘리먼트를 숨김처리
+        document.getElementById("popupWin").style.display = 'none';
+        //쿠키를 생성한다.
+        setCookie("popupWin", "off", 1);
+    }
+    //HTML문서가 로드되면 쿠키를 읽어온다.
+    window.onload = function(){
+        var popupWinValue = getCookie("popupWin");
+        if(popupWinValue=='off'){
+            //팝업창을 숨김처리한다. 즉 팝업을 열지 않는다.
+            document.getElementById("popupWin").style.display = 'none';
+        }
+        else{
+            //팝업창을 열어준다
+            document.getElementById("popupWin").style.display = 'block';
+        }
+    }
+    </script>
+    <style>
+        .popupWin{
+            width: 200px; height: 250px; background-color: blueviolet;
+            color: greenyellow; font-size: 1em; text-align: center;
+            line-height: 150px; position: absolute; top: 150px; left: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h2>쿠키 생성 하기</h2>
+    <form>
+        쿠키명 : <input type="text" id="cName" value="popup1">
+        <br>
+        쿠키에 저장할 값 : <input type="text" id="cValue" value="팝업창열기">
+        <br>
+        <button type="button" onclick="makeCookie();">쿠키생성</button>
+        <button type="button" onclick="readCookie();">쿠키읽기</button>
+        <button type="button" onclick="deleteCookie();">쿠키삭제</button>
+    </form>
+    
+    <div class="popupWin" id="popupWin" style="">
+        오늘의 팝업창
+        <br>
+        <input type="checkbox" id="popChk" onclick="closeWin();">오늘하루 팝업창 열지않기
+    </div>
+</body>
+</html>

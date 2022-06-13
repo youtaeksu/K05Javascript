@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 
+    문제15] 다음 화면과 같이 16개의 <div>태그를 출력하고 각 배경색을 랜덤한 색으로  
+    표현하는 프로그램을 작성하시오. 즉, 새로고침 할때마다 색이 랜덤하게 바뀐다.
+     -->
+    <style>
+        div {
+            width: 150px;
+            height: 80px;
+            line-height: 80px;
+            text-align: center;
+            float: left;
+        }
+    </style>
+    <script>
+        /*
+        해당 윈도우(브라우저)의 로딩이 완료된 후 무기명 함수를 실행하는 방식으로
+        자바스크립트는 인터프리터 방식으로 동작하므로 DOM객체와의 연동을 위해
+        자주 사용되는 방식이다.
+        */
+        window.onload = function () {
+            var str = '';
+            for (var i = 1; i <= 16; i++) {
+                /*
+                RGB에 해당하는 색깔을 구하기 위해 난수를 생성한다.
+                256으로 나누면 0~255까지의 난수를 구할 수 있다. 단 소수점이
+                남게되므로 버림처리한다.
+                */
+                var r = Math.floor(Math.random() * 256);
+                var g = Math.floor(Math.random() * 256);
+                var b = Math.floor(Math.random() * 256);
+                str += '<div style="background-color:rgb(' + r + ',' + g + ',' + b + ');">rgb(' + r + ',' + g + ',' + b + ')</div>';
+            }
+            document.getElementById("showDiv").innerHTML = str;
+        }
+    </script>
+</head>
+
+<body>
+    <h2>16개의 랜덤한 배경색 지정하기</h2>
+    <hr>
+    <span id="showDiv"></span>
+    <!-- 
+    <div style="background-color:rgb(255, 255, 255);">rgb(255, 255, 255)</div>
+    <div style="background-color:rgb(255, 76, 76);">rgb(255, 76, 76)</div> 
+    -->
+
+</body>
+
+</html>

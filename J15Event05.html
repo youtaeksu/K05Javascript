@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J15Event05.html</title>
+    <script>
+    /*
+    키보드 이벤트
+    keydown : 키보드를 누를때 발생하는 이벤트. shift와 같은 특수키도 인식할 수 있다.
+        한글인 경우도 인식한다.
+    keyup : 키보드를 눌렀다가 땠을때 발생하는 이벤트. keydown과 인식하는 키가 동일하다.
+    keypress : keydown과 동일한 이벤트이지만, shift와 같은 특수키를 인식하지 못한다.
+        또한 한글도 인식하지 못한다.
+    */
+    //키보드의 누른 횟수를 카운트
+        var count = 0;
+
+        function fnKeyHandler(flag) {
+
+            count++;
+            //이벤트에 관련된 문자열을 출력할 DOM
+            var spanTag = document.getElementById("span");
+            switch (flag) {
+                case 1:
+                    spanTag.innerHTML = "keydown이벤트발생" + count;
+                    break;
+                case 2:
+                    spanTag.innerHTML = "keypress이벤트발생" + count;
+                    break;
+                case 3:
+                    spanTag.innerHTML = "keyup이벤트발생" + count;
+                    break;
+            }
+        }
+
+        function FnKeyEvent() {
+            var span = document.getElementById("keySpan");
+            //키보드 이벤트 발생시 눌러진 키보드의 키코드값을 반환한다.
+            var keycode = event.keyCode;
+            //얻어온 키코드 값을 span태그에 삽입한다.
+            span.innerHTML = keycode;
+            //지정한 키보드 웹페이지에서 막아야할때 리스너쪽으로 false를 반환한다.
+            if (keycode == 116 || keycode == 8) {
+                alert("해당 문서에서는 F5, Backspace는 사용할 수 없습니다.");
+                //리스너(핸들러)쪽으로 false가 반환되면 해당 이벤트는 차단된다.
+                return false;
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <h2>키보드 이벤트</h2>
+
+    <h3>Key 이벤트 테스트</h3>
+    keydown : <input type="text" onkeydown="fnKeyHandler(1)" />
+    <br />
+    keypress : <input type="text" onkeypress="fnKeyHandler(3)" />
+    <br />
+    keyup : <input type="text" onkeyup="fnKeyHandler(3)" />
+    <br />
+    <span id="span" style="font-size:1.5em; color:red;"></span>
+
+    <h3>keyCode 이용하여 현재키 알아내기</h3>
+    F5와 Backspace키는 사용불가합니다.
+    <br />
+    <input type="text" onkeydown="return FnKeyEvent();" />
+    <br />
+    <span id="keySpan" style="color:blue; font-size:1.5em;"></span>
+
+
+
+    <script>
+        //주민번호 첫번째 자리에 6자리를 입력하면 두번째 자리로 이동하는 함수
+        function fnJuminFocus(){
+            //주민번호 앞자리의 DOM객체를 얻어온다.
+            var obj1 = document.getElementById("ju1");
+            //입력한 값의 글자수를 확인한다.
+            var strLen = obj1.value.length;
+            //글자수가 6글자라면 포커스를 두번째자리로 이동한다.
+            if(strLen==6){
+                document.getElementById("ju2").focus();
+            }
+
+        }
+
+        function commonFocusMove(thisObj, numLength, nextObj){
+            //주민번호 앞자리의 DOM객체를 얻어온다.
+            var obj2 = document.getElementById(thisObj);
+            //입력한 값의 글자수를 확인한다.
+            var strLen = obj2.value.length;
+            //글자수가 6글자라면 포커스를 두번째자리로 이동한다.
+            if(strLen==numLength){
+                document.getElementById(nextObj).focus();
+            }
+        }
+
+        
+    </script>
+
+    <h3>특정 조건에서 포커스 이동하기</h3>
+    <!-- 
+        시나리오] 주민등록번호 앞의 6자리를 입력하면 뒷자리로 포커스가
+            자동으로 이동하는 함수를 작성하시오.
+     -->
+    <h4>주민등록번호 입력하기</h4>
+    <input type="text" id="ju1" size="6" onkeyup="fnJuminFocus();" maxlength="6"> -
+    <input type="text" id="ju2" size="7" onkeyup="commonFocusMove('ju2',7,'tel1');">
+
+    <!-- 
+        연습문제] 앞에서와 마찬가지로 주민번호 뒤 7자리를 입력하면 전화번호의 tel1로
+            이동하고, tel1에서 3자리가 입력되면 tel2로 이동하는 함수를 생성하시오. 
+     -->
+    <h4>휴대전화번호 입력하기</h4>
+    <input type="text" id="tel1" size="3" onkeyup="commonFocusMove('tel1',3,'tel2');"> -
+    <input type="text" id="tel2" size="4" onkeyup="commonFocusMove('tel2',4,'tel3');"> -
+    <input type="text" id="tel3" size="4">
+
+</body>
+
+</html>

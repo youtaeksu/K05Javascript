@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>정수 5개를 입력받은 후 역순으로 출력</h2>
+    <hr>
+    <script>
+        var arr = [];
+        for(var i=0 ; i<5 ; i++){
+            //숫자 5개를 입력받은 후 배열에 저장
+            var str = prompt("정수를 입력하세요");
+            //연산이 필요없다면 parseInt()는 없어도 됨.
+            arr[i] = parseInt(str);
+        }
+        document.write("<br>입력된 수의 배열<br>");
+        for(var i=0 ; i<5 ; i++){
+            document.write(arr[i]+" ");
+        }
+
+        document.write("<br>입력된 수의 역순으로 출력1<br>");
+        for(var i=4 ; i>=0 ; i--){
+            document.write(arr[i]+" ");
+        }
+
+        document.write("<br>입력된 수의 역순으로 출력2<br>");
+        arr.reverse();//배열의 역순으로 재정렬 해준다. 
+        for(var i=0 ; i<5 ; i++){
+            document.write(arr[i]+" ");
+        }
+    </script>
+</body>
+</html>

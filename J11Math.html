@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J11Math.html</title>
+    <script>
+        document.write("JS의 core객체 - Math");
+
+        document.write("-10의 절대값 : " + Math.abs(-10) + "<br/>");
+        document.write("2의 3승:" + Math.pow(2, 3) + "<br/>");
+        document.write("3.159의 반올림:" + Math.round(3.159) + "<br/>");
+        document.write("3.159의 올림:" + Math.ceil(3.159) + "<br/>");
+        document.write("3.159의 내림:" + Math.floor(3.159) + "<br/>");
+        /*
+        나숫는 0~1사이의 실수값을 랜덤하게 반환한다. 따라서 정수형으로 사용할때는
+        10혹은100과 같은 수를 곱한 후 소수점을 제거한다.
+        */
+        document.write("난수발생1:" + Math.random() + "<br/>");
+        document.write("난수발생2(1~10):" + parseInt((Math.random() * 10) + 1) + "<br/>");
+
+        document.write("최소값:" + Math.min(1, 10, -100, -10, 1000, 0) + "<br/>");
+        document.write("최대값:" + Math.max(1, 10, -100, -10, 1000, 0) + "<br/>");
+
+        var setOrdering = function (arr) {
+            for (var i = 0; i < arr.length - 1; i++) {
+                for (var j = 0; j < (arr.length - 1) - i; j++) {
+                    if (arr[j] > arr[j + 1]) {
+                        temp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = temp;
+                    }
+                }
+            }
+        }
+        //로또번호를 생성한 후 정렬까지 진행
+        function getLotto() {
+
+            var lottoStr = "";
+            //로또번호를 저장할 배열을 생성한 후 0으로 초기화
+            var lottoNum = [0, 0, 0, 0, 0, 0];
+            //로또 배열의 인덱스로 숫자를 채울때마다 하나씩 증가
+            var index = 0;
+            //중복값 확인을 위한 변수
+            var flag = false;
+            /*
+            배열에 중복되지 않는 난수를 하나씩 채워가면서 1씩 증가시켜 6개의
+            난수가 채워지면 while문을 탈출한다.
+            */
+            while (index < 6) {
+                //1~45사이의 난수를 생성한다.
+                /*
+                1. 0~1사이의 난수를 생성한다. ex)0.123456
+                2. 난수에 45를 곱한 후 소수부를 제거하기 위해 parseInt를 사용한다.
+                3. 그러면 0~44까지의 정수가 생성된다.
+                4. 로또번호는 1부터 시작이므로 3의 결과에 1을 더해준다.
+                */
+                var randomNum = parseInt(Math.random() * 45) + 1;
+                //배열에 저장된 숫자와 난수를 비교하기 위해 배열의 크기만큼 반복한다.
+                for (var i = 0; i < lottoNum.length; i++) {
+                    //만약 배열의 i번째 숫자와 난수가 일치하면 flag를 true로 변경한다.
+                    if (lottoNum[i] == randomNum) {
+                        flag = true;
+                    }
+                }
+                if (flag == true) {
+                    /*
+                    중복된 값이 확인되면 처음으로 돌아가서 난수를 다시 생성한다.
+                    이때 flag를 false로 초기화해야 한다.
+                    */
+                    flag = false;
+                    continue;
+                }
+                else {
+                    /*
+                    중복된 값이 없다면 배열을 처음부터 채워준다. 채운후에는 index를 1증가시킨다.
+                    index의 초기값은 0이고, 후위증가하고 있으므로 0번 index에 값을 채운후에
+                    1증가하게 된다.
+                    */
+                    lottoNum[index++] = randomNum;
+                }
+            }
+            //로또번호 생성이 완료되면 오름차순으로 정렬한다.
+            setOrdering(lottoNum);
+
+            var lottoStr = "";
+            //생성된 로또번호를 문자열 변수에 연결해서 저장한다.
+            for (var i = 0; i < lottoNum.length; i++) {
+                lottoStr += lottoNum[i] + "&nbsp;"
+            }
+            //웹브라우저에 출력한다.
+            document.getElementById("lottoNumber").innerHTML
+                = lottoStr;
+        }
+
+    </script>
+</head>
+
+<body>
+    <h2>Lotto(1~45) 번호 생성하기</h2>
+    <button type="button" onclick="getLotto();">
+        로또번호생성하기
+    </button>
+    <!--span#lottoNumber-->
+    <span id="lottoNumber" style="font-size:2em; color:red;">
+        생성된 로또번호는 여기에 출력됩니다.
+    </span>
+</body>
+
+</html>
